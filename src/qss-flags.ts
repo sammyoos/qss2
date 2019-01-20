@@ -16,14 +16,14 @@ namespace qss {
       }
     }
 
-    flag ( pos: number ) : number {
+    flag ( pos: number ) : FlagSet {
       this._flag |= this.FLAGS[ pos ];
-      return this._flag;
+      return this;
     }
 
-    unflag ( pos: number ) : number {
+    unflag ( pos: number ) : FlagSet {
       this._flag &= ~this.FLAGS[ pos ];
-      return this._flag;
+      return this;
     }
 
     check ( pos: number ) : boolean {
@@ -34,9 +34,9 @@ namespace qss {
       return( this._flag == this.FLAGS[ pos ] );
     }
 
-    clear () : number {
+    clear () : FlagSet {
       this._flag = 0;
-      return this._flag;
+      return this;
     }
 
     count () : number {
@@ -51,7 +51,7 @@ namespace qss {
       return( num );
     }
 
-    setAll ( num: number ) : number {
+    setAll ( num: number ) : FlagSet {
       this._flag = 0;
 
       while( num-- > 0 ) {
@@ -59,7 +59,7 @@ namespace qss {
         this._flag |= 1;
       }
 
-      return this._flag;
+      return this;
     }
 
     toValue () : number {
