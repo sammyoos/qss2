@@ -1,0 +1,51 @@
+
+doctype html
+html(lang="en")
+	head
+		title Quirky Sudoku Solver
+		link( rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" )
+		link( rel="stylesheet" href="qss.css" )
+
+	body
+		#container
+			h1 Quirky Sudoku Solver
+
+			table#blockGrid
+
+				- var blockRow = -1
+				- var blockCount = -1
+				while ++blockRow < 3
+					tr( id="blockRow-"+blockRow )
+						- var blockCol = -1
+
+						while ++blockCol < 3
+							td.cellBlock( id="cell-" + ++blockCount )
+								table.cellBlock
+
+									- var row = -1
+									while ++row < 3
+										- var rowPos = blockRow * 3 + row
+										- var col = -1
+										tr
+
+										while ++col < 3
+											- var colPos = blockCol * 3 + col
+											- var cellName = "cell-"+rowPos+":"+colPos
+
+											td.cell( id=cellName )
+												table.mini
+
+													- var mini_val = 0
+													- var mini_row = 0
+													while mini_row++ < 3
+														tr
+															- var mini_col = 0
+															while mini_col++ < 3
+																- ++mini_val
+																td.mini_cell
+																	div.mc_contents( id=cellName+"-"+mini_val ) #{mini_val}
+
+
+
+
+//- vim: set autoindent expandtab tabstop=2 shiftwidth=2 :
