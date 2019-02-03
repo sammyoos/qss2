@@ -1,0 +1,48 @@
+html, body {
+  background-color: #000000;
+  color: #CFCFCF;
+}
+
+table {
+  border-collapse: collapse;
+  border-color: black;
+  border: 0;
+  padding: 2;
+  margin: 2;
+  font-family: Calibri, sans-serif;
+}
+
+td.cellBlock {
+  border: 6px solid black;
+}
+
+table.cellBlock {
+  border: 0;
+}
+
+td.cell {
+  border: solid thin;
+  text-align: center;
+}
+
+table.mini {
+  width: 100%;
+  font-size: x-small;
+  border: none;
+  background-color: grey;
+  color: yellow;
+  padding: 0;
+  margin: 0;
+}
+
+td.mini_cell {
+  padding: 0;
+  margin: 0;
+}
+
+div.mc_contents {
+  width: 13px;
+  height: 13px;
+}
+
+/*# sourceMappingURL=qss.css.map */
