@@ -5,7 +5,7 @@ html, body {
 
 table {
   border-collapse: collapse;
-  border-color: black;
+  border-color: #000000;
   border: 0;
   padding: 2;
   margin: 2;
@@ -13,7 +13,7 @@ table {
 }
 
 td.cellBlock {
-  border: 6px solid black;
+  border: 6px solid #000000;
 }
 
 table.cellBlock {
@@ -25,22 +25,21 @@ td.cell {
   text-align: center;
 }
 
-table.mini {
+table.factors {
   width: 100%;
   font-size: x-small;
   border: none;
-  background-color: grey;
-  color: yellow;
+  background-color: #202020;
+  color: #505050;
   padding: 0;
   margin: 0;
 }
 
-td.mini_cell {
+td.factor {
   padding: 0;
   margin: 0;
 }
-
-div.mc_contents {
+td.factor div {
   width: 13px;
   height: 13px;
 }

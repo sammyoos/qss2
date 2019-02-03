@@ -18,7 +18,7 @@ html(lang="en")
             - var blockCol = -1
 
             while ++blockCol < 3
-              td.cellBlock( id="cell-" + ++blockCount )
+              td.cellBlock( id="block-" + ++blockCount )
                 table.cellBlock
 
                   - var row = -1
@@ -30,18 +30,19 @@ html(lang="en")
                       while ++col < 3
                         - var colPos = blockCol * 3 + col
                         - var cellName = "cell-"+rowPos+":"+colPos
+                        - var factorPrefix = "factor-"+rowPos+":"+colPos
 
                         td.cell( id=cellName )
-                          table.mini
+                          table.factors
 
-                            - var mini_val = 0
-                            - var mini_row = 0
-                            while mini_row++ < 3
+                            - var miniVal = 0
+                            - var miniRow = 0
+                            while miniRow++ < 3
                               tr
-                                - var mini_col = 0
-                                while mini_col++ < 3
-                                  - ++mini_val
-                                  td.mini_cell
-                                    div.mc_contents( id=cellName+"-"+mini_val ) #{mini_val}
+                                - var miniCol = 0
+                                while miniCol++ < 3
+                                  - ++miniVal
+                                  td.factor
+                                    div.mc_contents( id=factorPrefix+"-"+miniVal ) #{miniVal}
 
 //- vim: set autoindent expandtab tabstop=2 shiftwidth=2 :
