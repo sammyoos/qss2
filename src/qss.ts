@@ -16,8 +16,6 @@ namespace qss {
       this.nam = name;
       this.row = r;
       this.col = c;
-      
-      // console.log( 'created a new cell... ' + this.nam );
     }
 
     public addValueChangeListener( func: numberCallback ) {
@@ -25,14 +23,18 @@ namespace qss {
     }
 
     public change( newValue: number ) {
-      // console.log( 'setting ' + this.nam + ' to ' + newValue );
       this.val = newValue;
-
-      // console.info( this.valueChangeListener );
       for( let i=0; i<this.valueChangeListener.length; i++ ) {
         this.valueChangeListener[i]( newValue );
       }
     }
+
+    public reduceFactors() {
+      if( this.val > 0 ) {
+        console.log( 'yahoo' );
+      }
+    }
+
   }
 
   export class Board {
@@ -65,7 +67,7 @@ namespace qss {
     }
   }
 
-}
+} //- end of namespace: qss
 
 
 function initUI_cells( brd: qss.Board, cQ: voidCallback[] ) {

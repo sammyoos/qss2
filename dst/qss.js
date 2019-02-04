@@ -9,17 +9,19 @@ var qss;
             this.nam = name;
             this.row = r;
             this.col = c;
-            // console.log( 'created a new cell... ' + this.nam );
         }
         Cell.prototype.addValueChangeListener = function (func) {
             this.valueChangeListener.push(func);
         };
         Cell.prototype.change = function (newValue) {
-            // console.log( 'setting ' + this.nam + ' to ' + newValue );
             this.val = newValue;
-            // console.info( this.valueChangeListener );
             for (var i = 0; i < this.valueChangeListener.length; i++) {
                 this.valueChangeListener[i](newValue);
+            }
+        };
+        Cell.prototype.reduceFactors = function () {
+            if (this.val > 0) {
+                console.log('yahoo');
             }
         };
         return Cell;
@@ -52,7 +54,7 @@ var qss;
             }
         }
     };
-})(qss || (qss = {}));
+})(qss || (qss = {})); //- end of namespace: qss
 function initUI_cells(brd, cQ) {
     $("td.cell").each(function () {
         var me = $(this);
