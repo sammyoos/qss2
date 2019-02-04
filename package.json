@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/sammyoos/qss2#readme",
   "dependencies": {
+    "@types/bootstrap": "^4.2.1",
+    "@types/jquery": "^3.3.29",
     "@types/qunit": "^2.5.4",
     "pug": "^2.0.3",
     "qunit": "^2.9.1",

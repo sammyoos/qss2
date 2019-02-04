@@ -1,6 +1,7 @@
 $pageBackground: #000000
 $factorTextColor: #505050
 $factorTextBackground: #202020
+$choiceColor: #2D7BD9
 
 html, body
   background-color: $pageBackground
@@ -23,6 +24,14 @@ table.cellBlock
 td.cell
   border: solid thin
   text-align: center
+  vertical-align: middle
+  width: 42px
+  height: 42px
+
+div.choice
+  color: $choiceColor
+  display: none
+  // visibility: hidden
 
 table.factors
   width: 100%

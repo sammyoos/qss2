@@ -23,6 +23,14 @@ table.cellBlock {
 td.cell {
   border: solid thin;
   text-align: center;
+  vertical-align: middle;
+  width: 42px;
+  height: 42px;
+}
+
+div.choice {
+  color: #2D7BD9;
+  display: none;
 }
 
 table.factors {
