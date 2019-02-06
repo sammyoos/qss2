@@ -29,8 +29,15 @@ td.cell {
 }
 
 div.choice {
-  color: #2D7BD9;
   display: none;
+}
+
+.choiceColor {
+  color: #2D7BD9;
+}
+
+.initialColor {
+  color: #15ACBB;
 }
 
 table.factors {

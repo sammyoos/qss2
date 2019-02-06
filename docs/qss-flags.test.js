@@ -8,9 +8,13 @@ QUnit.test('basic FlagSet', function (assert) {
     assert.equal(flags.toValue(), 0, 'initial value 0......');
     // assert.equal( qss.FLAGS[0], 1, 'check flag 0......' );
     // assert.equal( qss.FLAGS[2], 4, 'check flag 2......' );
+    assert.equal(qss.FlagSet.FLAGS[0], 1, 'check the base flags......');
+    assert.equal(qss.FlagSet.FLAGS[1], 2, 'check the base flags......');
 });
 QUnit.test('FlagSet functions', function (assert) {
     var flags = new qss.FlagSet();
+    assert.equal(qss.FlagSet.FLAGS[0], 1, 'check the base flags......');
+    assert.equal(qss.FlagSet.FLAGS[1], 2, 'check the base flags......');
     assert.equal(flags.setAll(8).toValue(), 255, 'set the first eight bits......');
     assert.equal(flags.count(), 8, 'should be eight bits set......');
     assert.ok(flags.check(3), 'check position 3......');

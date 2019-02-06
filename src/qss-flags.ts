@@ -1,37 +1,38 @@
 namespace qss {
 
   export class FlagSet {
-    readonly MAX_FLAGS: number = 16;
-    readonly FLAGS: number[] = [];
+    static readonly MAX_FLAGS: number = 16;
+    public static readonly FLAGS: number[] = [];
     protected _flag : number = 0;
 
-    constructor () {
-      // precreate all the unit flags
-      let f:number = 0;
-      let slider:number = 1;
 
-      while( f < this.MAX_FLAGS ) {
-        this.FLAGS[ f++ ] = slider;
+    constructor () {
+      if( FlagSet.FLAGS[1] != undefined ) return;
+
+      let slider:number = 1;
+      // precreate all the unit flags
+      for( let f=0; f < FlagSet.MAX_FLAGS; f++ ) {
+        FlagSet.FLAGS[ f ] = slider;
         slider <<= 1;
       }
     }
 
     flag ( pos: number ) : FlagSet {
-      this._flag |= this.FLAGS[ pos ];
+      this._flag |= FlagSet.FLAGS[ pos ];
       return this;
     }
 
     unflag ( pos: number ) : FlagSet {
-      this._flag &= ~this.FLAGS[ pos ];
+      this._flag &= ~FlagSet.FLAGS[ pos ];
       return this;
     }
 
     check ( pos: number ) : boolean {
-      return( ( this._flag & this.FLAGS[ pos ] ) != 0 );
+      return( ( this._flag & FlagSet.FLAGS[ pos ] ) != 0 );
     }
 
     only ( pos: number ) : boolean {
-      return( this._flag == this.FLAGS[ pos ] );
+      return( this._flag == FlagSet.FLAGS[ pos ] );
     }
 
     clear () : FlagSet {

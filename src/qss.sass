@@ -1,7 +1,13 @@
 $pageBackground: #000000
+
+// colors for the number box
+$choiceColor: #2D7BD9
+$initialColor: #15ACBB
+
+// colors for the mini factors
 $factorTextColor: #505050
 $factorTextBackground: #202020
-$choiceColor: #2D7BD9
+
 
 html, body
   background-color: $pageBackground
@@ -29,9 +35,14 @@ td.cell
   height: 42px
 
 div.choice
-  color: $choiceColor
   display: none
-  // visibility: hidden
+
+.choiceColor
+  color: $choiceColor
+
+.initialColor
+  color: $initialColor
+
 
 table.factors
   width: 100%

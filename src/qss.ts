@@ -1,16 +1,20 @@
+
+type changeCallback = (n: number, c: boolean ) => any;
 type numberCallback = (n: number) => any;
 type voidCallback = ( ) => any;
 
 namespace qss {
+  type groupType = Cell[][];
   console.log( 'where does this get hit????' );
 
   export class Cell {
     public readonly row: number;
     public readonly col: number;
     public readonly nam: string;
+    public readonly nonFactors = new FlagSet();
 
     private val: number = 0;
-    private valueChangeListener: numberCallback[] = [];
+    private valueChangeListener: changeCallback[] = [];
     
     constructor ( name: string, r: number, c: number ) {
       this.nam = name;
@@ -18,14 +22,14 @@ namespace qss {
       this.col = c;
     }
 
-    public addValueChangeListener( func: numberCallback ) {
+    public addValueChangeListener( func: changeCallback ) {
       this.valueChangeListener.push( func );
     }
 
-    public change( newValue: number ) {
+    public change( newValue: number, initalValues: boolean ) {
       this.val = newValue;
       for( let i=0; i<this.valueChangeListener.length; i++ ) {
-        this.valueChangeListener[i]( newValue );
+        this.valueChangeListener[i]( newValue, initalValues );
       }
     }
 
@@ -37,21 +41,68 @@ namespace qss {
 
   }
 
+  export class Grouping {
+    public readonly group: groupType;
+    public readonly factorComplete = new FlagSet();
+    private groupComplete = false;
+
+    constructor ( g: groupType ) {
+      this.group = g;
+    }
+
+    public reduceFactors() : number {
+      if( this.groupComplete ) return -1;
+
+      // find next set value
+      for( let i=0; i<9; i++ ) {
+        let row = this.group[i];
+
+        // check each factor
+        for( let f=0; f<9; f++ ) {
+          if( this.factorComplete.check(f) ) continue;
+        }
+
+        if( row[ i ] != null ) continue;
+      }
+
+      console.log( this.group );
+      return -1;
+    }
+
+  }
+
+
   export class Board {
-    public readonly loc: Cell[][] = [ Array( 9 ), Array( 9 ), Array( 9 ), Array( 9 ), Array( 9 ), Array( 9 ), Array( 9 ), Array( 9 ), Array( 9 ) ];
     public readonly map: { [ key: string ]: Cell; } = {};
 
+    public readonly row: Grouping;
+    public readonly col: Grouping;
+    public readonly blk: Grouping;
+
+    private static outerBlockLookup = [ [ 8, 8, 8, 7, 7, 7, 6, 6, 6 ], [ 8, 8, 8, 7, 7, 7, 6, 6, 6 ], [ 8, 8, 8, 7, 7, 7, 6, 6, 6 ], [ 5, 5, 5, 4, 4, 4, 3, 3, 3 ], [ 5, 5, 5, 4, 4, 4, 3, 3, 3 ], [ 5, 5, 5, 4, 4, 4, 3, 3, 3 ], [ 2, 2, 2, 1, 1, 1, 0, 0, 0 ], [ 2, 2, 2, 1, 1, 1, 0, 0, 0 ], [ 2, 2, 2, 1, 1, 1, 0, 0, 0 ], ];
+    private static innerBlockLookup = [ [ 8, 7, 6, 8, 7, 6, 8, 7, 6 ], [ 5, 4, 3, 5, 4, 3, 5, 4, 3 ], [ 2, 1, 0, 2, 1, 0, 2, 1, 0 ], [ 8, 7, 6, 8, 7, 6, 8, 7, 6 ], [ 5, 4, 3, 5, 4, 3, 5, 4, 3 ], [ 2, 1, 0, 2, 1, 0, 2, 1, 0 ], [ 8, 7, 6, 8, 7, 6, 8, 7, 6 ], [ 5, 4, 3, 5, 4, 3, 5, 4, 3 ], [ 2, 1, 0, 2, 1, 0, 2, 1, 0 ], ];
+
     constructor () {
+      let rows: Cell[][] = [ new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ) ];
+      let cols: Cell[][] = [ new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ) ];
+      let blks: Cell[][] = [ new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ), new Array( 9 ) ];
+
       console.log( 'building array...' );
       for( let r=0; r<9; r++ ){
         for( let c=0; c<9; c++ ){
           let name: string = 'cell-' + r + ':' + c;
           let cell = new Cell(  name, r, c );
-
-          this.loc[r][c] = cell;
           this.map[ name ] = cell;
+
+          rows[r][c] = cell;
+          cols[c][r] = cell;
+          blks[ 8-Board.outerBlockLookup[r][c] ][ 8-Board.innerBlockLookup[r][c] ] = cell;
         }
       }
+
+      this.row = new Grouping( rows );
+      this.col = new Grouping( cols );
+      this.blk = new Grouping( blks );
     }
   }
 
@@ -61,7 +112,7 @@ namespace qss {
     for( let r=0; r<9; r++ ){
       for( let c=0; c<9; c++ ){
         if( puz[r][c] > 0 ) {
-          board.loc[r][c].change( puz[r][c] );
+          board.row.group[r][c].change( puz[r][c], true );
         }
       }
     }
@@ -81,9 +132,9 @@ function initUI_cells( brd: qss.Board, cQ: voidCallback[] ) {
     let factors = me.find( "table" );
     let choice  = me.find( "div" );
 
-    cell.addValueChangeListener( function( newValue: number ) {
-      choice.text( newValue );
-      cQ.push( function() { factors.hide(); });
+    cell.addValueChangeListener( function( newValue: number, initialValues: boolean ) {
+      factors.hide();
+      choice.text( newValue ).addClass( initialValues ? 'initialColor' : 'choiceColor' );
       cQ.push( function() { choice.show(); });
     });
   });

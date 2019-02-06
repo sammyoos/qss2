@@ -3,30 +3,29 @@ var qss;
 (function (qss) {
     var FlagSet = /** @class */ (function () {
         function FlagSet() {
-            this.MAX_FLAGS = 16;
-            this.FLAGS = [];
             this._flag = 0;
-            // precreate all the unit flags
-            var f = 0;
+            if (FlagSet.FLAGS[1] != undefined)
+                return;
             var slider = 1;
-            while (f < this.MAX_FLAGS) {
-                this.FLAGS[f++] = slider;
+            // precreate all the unit flags
+            for (var f = 0; f < FlagSet.MAX_FLAGS; f++) {
+                FlagSet.FLAGS[f] = slider;
                 slider <<= 1;
             }
         }
         FlagSet.prototype.flag = function (pos) {
-            this._flag |= this.FLAGS[pos];
+            this._flag |= FlagSet.FLAGS[pos];
             return this;
         };
         FlagSet.prototype.unflag = function (pos) {
-            this._flag &= ~this.FLAGS[pos];
+            this._flag &= ~FlagSet.FLAGS[pos];
             return this;
         };
         FlagSet.prototype.check = function (pos) {
-            return ((this._flag & this.FLAGS[pos]) != 0);
+            return ((this._flag & FlagSet.FLAGS[pos]) != 0);
         };
         FlagSet.prototype.only = function (pos) {
-            return (this._flag == this.FLAGS[pos]);
+            return (this._flag == FlagSet.FLAGS[pos]);
         };
         FlagSet.prototype.clear = function () {
             this._flag = 0;
@@ -53,6 +52,8 @@ var qss;
         FlagSet.prototype.toValue = function () {
             return this._flag;
         };
+        FlagSet.MAX_FLAGS = 16;
+        FlagSet.FLAGS = [];
         return FlagSet;
     }());
     qss.FlagSet = FlagSet;
