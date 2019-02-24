@@ -2,17 +2,21 @@
 var qss;
 (function (qss) {
     var FlagSet = /** @class */ (function () {
-        function FlagSet() {
+        function FlagSet(numFlags) {
+            if (numFlags === void 0) { numFlags = 0; }
             this._flag = 0;
-            if (FlagSet.FLAGS[1] != undefined)
-                return;
-            var slider = 1;
+            if (numFlags > 0) {
+                this.setAll(numFlags);
+            }
+        }
+        FlagSet.initialize = function () {
             // precreate all the unit flags
+            var slider = 1;
             for (var f = 0; f < FlagSet.MAX_FLAGS; f++) {
                 FlagSet.FLAGS[f] = slider;
                 slider <<= 1;
             }
-        }
+        };
         FlagSet.prototype.flag = function (pos) {
             this._flag |= FlagSet.FLAGS[pos];
             return this;
@@ -57,5 +61,6 @@ var qss;
         return FlagSet;
     }());
     qss.FlagSet = FlagSet;
+    FlagSet.initialize();
 })(qss || (qss = {}));
 // vim: set autoindent expandtab tabstop=2 shiftwidth=2 :

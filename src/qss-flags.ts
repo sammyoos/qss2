@@ -5,15 +5,18 @@ namespace qss {
     public static readonly FLAGS: number[] = [];
     protected _flag : number = 0;
 
-
-    constructor () {
-      if( FlagSet.FLAGS[1] != undefined ) return;
-
-      let slider:number = 1;
+    static initialize() {
       // precreate all the unit flags
+      let slider:number = 1;
       for( let f=0; f < FlagSet.MAX_FLAGS; f++ ) {
         FlagSet.FLAGS[ f ] = slider;
         slider <<= 1;
+      }
+    }
+
+    constructor ( numFlags = 0 ) {
+      if( numFlags > 0 ) {
+        this.setAll( numFlags );
       }
     }
 
@@ -68,6 +71,7 @@ namespace qss {
     }
   }
 
+  FlagSet.initialize();
 }
 
 // vim: set autoindent expandtab tabstop=2 shiftwidth=2 :

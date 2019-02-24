@@ -4,14 +4,14 @@ type numberCallback = (n: number) => any;
 type voidCallback = ( ) => any;
 
 namespace qss {
-  type groupType = Cell[][];
+  type groupType = Cell[];
   console.log( 'where does this get hit????' );
 
   export class Cell {
     public readonly row: number;
     public readonly col: number;
     public readonly nam: string;
-    public readonly nonFactors = new FlagSet();
+    public readonly factors = new FlagSet( 9  );
 
     private val: number = 0;
     private valueChangeListener: changeCallback[] = [];
@@ -33,29 +33,38 @@ namespace qss {
       }
     }
 
-    public reduceFactors() {
-      if( this.val > 0 ) {
-        console.log( 'yahoo' );
-      }
+    public getValue() :number {
+      return this.val;
     }
-
   }
 
   export class Grouping {
-    public readonly group: groupType;
-    public readonly factorComplete = new FlagSet();
-    private groupComplete = false;
+    public readonly row: groupType;
+    public readonly factorComplete = new FlagSet( 9 );
 
     constructor ( g: groupType ) {
-      this.group = g;
+      this.row = g;
     }
 
-    public reduceFactors() : number {
-      if( this.groupComplete ) return -1;
+    public reduceFactor( fac: number ) {
+      if( this.factorComplete.toValue() == 0 ) return -1;
+      // for( let i
+      console.log( fac );
 
-      // find next set value
+      return 0;
+    }
+
+    public initalReduceFactors() : number {
       for( let i=0; i<9; i++ ) {
-        let row = this.group[i];
+        let cell = this.row[i];
+        let value = cell.getValue();
+
+        if( value == 0 ) continue;
+
+
+
+
+        }
 
         // check each factor
         for( let f=0; f<9; f++ ) {
@@ -75,9 +84,9 @@ namespace qss {
   export class Board {
     public readonly map: { [ key: string ]: Cell; } = {};
 
-    public readonly row: Grouping;
-    public readonly col: Grouping;
-    public readonly blk: Grouping;
+    public readonly row: Grouping[] = [];
+    public readonly col: Grouping[] = [];
+    public readonly blk: Grouping[] = [];
 
     private static outerBlockLookup = [ [ 8, 8, 8, 7, 7, 7, 6, 6, 6 ], [ 8, 8, 8, 7, 7, 7, 6, 6, 6 ], [ 8, 8, 8, 7, 7, 7, 6, 6, 6 ], [ 5, 5, 5, 4, 4, 4, 3, 3, 3 ], [ 5, 5, 5, 4, 4, 4, 3, 3, 3 ], [ 5, 5, 5, 4, 4, 4, 3, 3, 3 ], [ 2, 2, 2, 1, 1, 1, 0, 0, 0 ], [ 2, 2, 2, 1, 1, 1, 0, 0, 0 ], [ 2, 2, 2, 1, 1, 1, 0, 0, 0 ], ];
     private static innerBlockLookup = [ [ 8, 7, 6, 8, 7, 6, 8, 7, 6 ], [ 5, 4, 3, 5, 4, 3, 5, 4, 3 ], [ 2, 1, 0, 2, 1, 0, 2, 1, 0 ], [ 8, 7, 6, 8, 7, 6, 8, 7, 6 ], [ 5, 4, 3, 5, 4, 3, 5, 4, 3 ], [ 2, 1, 0, 2, 1, 0, 2, 1, 0 ], [ 8, 7, 6, 8, 7, 6, 8, 7, 6 ], [ 5, 4, 3, 5, 4, 3, 5, 4, 3 ], [ 2, 1, 0, 2, 1, 0, 2, 1, 0 ], ];
@@ -89,6 +98,10 @@ namespace qss {
 
       console.log( 'building array...' );
       for( let r=0; r<9; r++ ){
+        this.row.push( new Grouping( rows[r] ));
+        this.col.push( new Grouping( cols[r] ));
+        this.blk.push( new Grouping( blks[r] ));
+
         for( let c=0; c<9; c++ ){
           let name: string = 'cell-' + r + ':' + c;
           let cell = new Cell(  name, r, c );
@@ -100,9 +113,6 @@ namespace qss {
         }
       }
 
-      this.row = new Grouping( rows );
-      this.col = new Grouping( cols );
-      this.blk = new Grouping( blks );
     }
   }
 
@@ -112,7 +122,7 @@ namespace qss {
     for( let r=0; r<9; r++ ){
       for( let c=0; c<9; c++ ){
         if( puz[r][c] > 0 ) {
-          board.row.group[r][c].change( puz[r][c], true );
+          board.row[r].group[c].change( puz[r][c], true );
         }
       }
     }

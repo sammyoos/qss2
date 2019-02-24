@@ -35,5 +35,14 @@ QUnit.test( 'FlagSet functions', function( assert ) {
 	assert.ok( flags.only( 2 ), 'only position 2......' );
 	assert.ok( ! flags.check( 3 ), 'not check position 3......' );
 	assert.ok( ! flags.only( 3 ), 'not only position 3......' );
+
+});
+
+QUnit.test( 'FlagSet default paramaters', function( assert ) {
+	let flags = new qss.FlagSet( 3 );
+	assert.ok( flags.check( 0 ), 'check position 0......' );
+	assert.ok( flags.check( 1 ), 'check position 1......' );
+	assert.ok( flags.check( 2 ), 'check position 2......' );
+	assert.ok( !flags.check( 3 ), 'check position 3......' );
 });
 
